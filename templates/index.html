@@ -1,0 +1,41 @@
+{% extends "base.html" %} {% load static %} {% block head_content %}
+<title>ATDEV TEST</title>
+{% endblock %} {% block container %}
+
+<div
+  style="
+    height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  "
+>
+  <div class="card text-center w-75">
+    <div class="card-body">
+      <h5 class="card-title">Salary Discount Calculator</h5>
+      <form
+        style="display: flex; justify-content: center"
+        method="POST"
+        action="{% url 'home' %}"
+        class="row g-3 p-5"
+      >
+        {% csrf_token %}
+        <div class="col-md-6">
+          <label for="inputEmail4" class="form-label">Salary</label>
+          <input type="number" class="form-control" id="salary" name="salary" />
+        </div>
+        <div style="text-align: center">
+          {% if not result %}
+            <h3>Result: <span>0.00</span></h3>
+          {%else%}
+            <h3>Result: <span>{{result}}</span></h3>
+          {% endif %}
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Calculate</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
