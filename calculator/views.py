@@ -1,5 +1,8 @@
 from django.shortcuts import render
 
+import pandas as pd
+
+
 def home(request):
     if request.method == 'POST':
 
@@ -38,3 +41,51 @@ def home(request):
         return render(request, 'index.html', context=context)
 
     return render(request, 'index.html')
+
+
+def dashboard(request):
+
+    if request.method == 'POST' and request.FILES['file_excel']:
+          
+        attachment = request.FILES['file_excel']
+        df = pd.read_excel(attachment)
+
+        quality = []
+        customer_experience = []
+        call_time = []
+        hours_completed = []
+
+        for inx, dic in df.iterrows():
+            quality.append(dic['Quality'])
+            customer_experience.append(dic['Customer Experience'])
+            call_time.append(dic['Time of the call'])
+            hours_completed.append(dic['Hours completed'])
+
+        context = {
+            'quality': {
+                'high': len(list(filter(lambda x: x == 'high', quality))),
+                'medium': len(list(filter(lambda x: x == 'medium', quality))),
+                'low': len(list(filter(lambda x: x == 'low', quality))),
+                'total': len(quality),
+            },
+            'customer_experience': {
+                'good': len(list(filter(lambda x: x == 'good', customer_experience))),
+                'bad': len(list(filter(lambda x: x == 'bad', customer_experience))),
+                'total': len(customer_experience),
+            },
+            'call_time': {
+                'min': min(call_time),
+                'max': max(call_time),
+                'avg': sum(call_time) / len(call_time),
+                'total': sum(call_time),
+            },
+            'hours_completed': {
+                'min': min(hours_completed),
+                'max': max(hours_completed),
+                'avg': sum(hours_completed) / len(hours_completed),
+                'total': sum(hours_completed),
+            },
+        }
+
+        return render(request, 'dashboard.html', context=context)
+    return render(request, 'dashboard.html')

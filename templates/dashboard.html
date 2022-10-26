@@ -1,0 +1,89 @@
+{% extends "base.html" %} {% load static %} {% block head_content %}
+<title>ATDEV TEST</title>
+{% endblock %} {% block container %}
+
+<div style="text-align: center">
+  <h1>Dashboard</h1>
+  <div class="shadow-lg continer">
+    <form
+      method="POST"
+      action="{% url 'dashboard' %}"
+      enctype="multipart/form-data"
+    >
+      {% csrf_token %}
+      <div style="display: flex; justify-content: center; justify-content: center;">
+        <div class="col-md-6 col-xs-12">
+          <div>
+            <div class="x_title">
+              <h4>Select Excel</h4>
+            </div>
+            <div style="display: flex;">
+              <input
+                required=""
+                type="file"
+                id="file_excel"
+                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                name="file_excel"
+                class="form-control"
+              />
+              <button style="margin-left: 10px;" type="submit" class="btn btn-primary">Upload</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </br>
+    </form>
+  </div>
+  {% if quality %}
+  <div class="pie-charts">
+    <div class="pieID--quality pie-chart--wrapper">
+      <h2>Quality</h2>
+      <h4>Total records ({{quality.total}})</h4>
+      <div class="pie-chart">
+        <div class="pie-chart__pie"></div>
+        <ul class="pie-chart__legend">
+          <li><em>High</em><span>{{quality.high}}</span></li>
+          <li><em>Medium</em><span>{{quality.medium}}</span></li>
+          <li><em>Low</em><span>{{quality.low}}</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="pieID--customer pie-chart--wrapper">
+      <h2>Customer Experience</h2>
+      <h4>Total records ({{customer_experience.total}})</h4>
+      <div class="pie-chart">
+        <div class="pie-chart__pie"></div>
+        <ul class="pie-chart__legend">
+          <li><em>Good</em><span>{{customer_experience.good}}</span></li>
+          <li><em>Bad</em><span>{{customer_experience.bad}}</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="pieID--time pie-chart--wrapper">
+      <h2>Time of the call</h2>
+      <h4>Total minutes ({{call_time.total}})</h4>
+      <div class="pie-chart">
+        <div class="pie-chart__pie"></div>
+        <ul class="pie-chart__legend">
+          <li><em>Higher</em><span>{{call_time.max}}</span></li>
+          <li><em>Avg</em><span>{{call_time.avg}}</span></li>
+          <li><em>Lower</em><span>{{call_time.min}}</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="pieID--hours pie-chart--wrapper">
+      <h2>Hours completed</h2>
+      <h4>Total hours ({{hours_completed.total}})</h4>
+      <div class="pie-chart">
+        <div class="pie-chart__pie"></div>
+        <ul class="pie-chart__legend">
+          <li><em>Higher</em><span>{{hours_completed.max}}</span></li>
+          <li><em>Avg</em><span>{{hours_completed.avg}}</span></li>
+          <li><em>Lower</em><span>{{hours_completed.min}}</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>  
+  {% endif %}
+</div>
+{% endblock %}
